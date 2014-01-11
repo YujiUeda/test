@@ -9,12 +9,16 @@
 #import <UIKit/UIKit.h>
 @class ViewController;
 @class listController;
+@class rankingController;
+@class initViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     ViewController *tab1;
     listController *tab2;
+    rankingController *tab3;
     UITabBarController *tabController;
+    initViewController *initViewController;
 }
 @property (strong, nonatomic) UIWindow *window;
 

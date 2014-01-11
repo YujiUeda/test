@@ -9,35 +9,39 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "listController.h"
+#import "rankingController.h"
+#import "initViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
-    // 初期値設定
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setFloat:110.0 forKey:@"kStartWeight"];
-    [ud setFloat:100.0 forKey:@"kFinishWeight"];
-    [ud setObject:@"yueda@yahoo-corp.jp" forKey:@"kMailAddress"];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if([ud floatForKey:@"kStartWeight"] && [ud floatForKey:@"kFinishWeight"] && [ud objectForKey:@"kAccount"] ){
+        // tabViewController
+        tab1 = [[ViewController alloc]init]; // タブ1
+        tab1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"記入" image:[UIImage imageNamed:@"tab_post.png"] selectedImage:[UIImage imageNamed:@"tab_post.png"]];
+        tab2 = [[listController alloc]init]; // タブ2
+        tab2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"戦歴" image:[UIImage imageNamed:@"tab_list.png"] selectedImage:[UIImage imageNamed:@"tab_list.png"]];
+        tab3 = [[rankingController alloc]init]; // タブ3
+        tab3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ランキング" image:[UIImage imageNamed:@"tab_rank.png"] selectedImage:[UIImage imageNamed:@"tab_rank.png"]];
+        NSArray *tabs = [NSArray arrayWithObjects:tab1, tab2, tab3, nil];
+        tabController = [[UITabBarController alloc] init];
+        [tabController setViewControllers:tabs animated:NO];
+        [self.window addSubview:tabController.view];
+        [self.window makeKeyAndVisible];
+
+} else {
+        // 初期値が設定されてなかったら、設定画面へ行く
+        initViewController *init = [[initViewController alloc] init];
+        [self.window addSubview:init.view];
+        [self.window setRootViewController:init];
+        [self.window makeKeyAndVisible];
+    }
     
-    // タブの中身（UIViewController）をインスタンス化
-    tab1 = [[ViewController alloc]init]; // タブ1
-    tab2 = [[listController alloc]init]; // タブ2
-    NSArray *tabs = [NSArray arrayWithObjects:tab1, tab2, nil];
-    
-    // タブコントローラをインスタンス化
-    tabController = [[UITabBarController alloc]init];
-    
-    // タブコントローラにタブの中身をセット
-    [tabController setViewControllers:tabs animated:NO];
-    
-    // タブコントローラのビューをウィンドウに貼付ける
-    [self.window addSubview:tabController.view];
-    
-    [self.window makeKeyAndVisible];
+        
     // Override point for customization after application launch.
     return YES;
 }

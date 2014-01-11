@@ -13,6 +13,9 @@
 }
 
 @property (nonatomic, retain) UILabel *weight;
+@property (nonatomic, retain) UILabel *comment;
+@property (nonatomic, retain) UILabel *dw;
+@property (nonatomic, retain) UILabel *gd;
 
 - (void)initButton;
 - (void)initWeightView;
